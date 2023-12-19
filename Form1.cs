@@ -20,15 +20,34 @@ namespace Chess
         private Tuple<int, int> MoveFrom = null;
         private Color DarkSquareViewed = Color.FromArgb(205, 206, 178);
         private Color WhiteSquareViewed = Color.FromArgb(89, 119, 56);
-        private PieceType PieceType = PieceType.WHITE;
+        private PieceType? PieceType = null;
 
         public Form1()
         {
-            Board board = new Board(PieceType.WHITE);
+            Random rn = new Random();
+
+            Board board = new Board(Boardlib.PieceType.WHITE);
+            if (rn.Next(2) == 0)
+                board = new Board(Boardlib.PieceType.BLACK);
+
+            PieceType = board.PlayerPieceType;
+
             InitializeComponent();
             InitializeChessboard();
             Print(board);
             Board = board;
+
+            if(PieceType == Boardlib.PieceType.BLACK)
+            {
+                ChessEngine engine = new ChessEngine("Stockfish/Stockfish.exe");
+
+                string bestMove = engine.GetBestMove(Board.GetFen(), 100);
+                char[] letters = bestMove.ToCharArray();
+                if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
+                    Board.SwapSqueres(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y, true, true, true);
+                else
+                    Board.SwapSqueres(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y, true, true, true);
+            }
         }
 
         private void InitializeChessboard()
@@ -67,7 +86,7 @@ namespace Chess
             CenterToScreen();
         }
 
-        private async void ChessButton_Click(object sender, EventArgs e)
+        private void ChessButton_Click(object sender, EventArgs e)
         {
             //Reset the btn styles
             ResetBtnStyle();
@@ -104,7 +123,7 @@ namespace Chess
 
                         string bestMove = engine.GetBestMove(Board.GetFen(), 100);
                         char[] letters = bestMove.ToCharArray();
-                        if (Board.PlayerPieceType == PieceType.WHITE)
+                        if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
                             Board.SwapSqueres(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y, true, true, true);
                         else
                             Board.SwapSqueres(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y, true, true, true);
@@ -137,19 +156,19 @@ namespace Chess
             switch (square.Type)
             {
                 case SquareContent.EMPTY: break;
-                case SquareContent.PAWN when square.PieceType == PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackPawn.png"); break;
-                case SquareContent.BISHOP when square.PieceType == PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackBishop.png"); break;
-                case SquareContent.KNIGHT when square.PieceType == PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackKnight.png"); break;
-                case SquareContent.QUEEN when square.PieceType == PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackQueen.png"); break;
-                case SquareContent.KING when square.PieceType == PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackKing.png"); break;
-                case SquareContent.ROCK when square.PieceType == PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackRock.png"); break;
+                case SquareContent.PAWN when square.PieceType == Boardlib.PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackPawn.png"); break;
+                case SquareContent.BISHOP when square.PieceType == Boardlib.PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackBishop.png"); break;
+                case SquareContent.KNIGHT when square.PieceType == Boardlib.PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackKnight.png"); break;
+                case SquareContent.QUEEN when square.PieceType == Boardlib.PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackQueen.png"); break;
+                case SquareContent.KING when square.PieceType == Boardlib.PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackKing.png"); break;
+                case SquareContent.ROCK when square.PieceType == Boardlib.PieceType.BLACK: btn.BackgroundImage = Image.FromFile("Images/BlackRock.png"); break;
 
-                case SquareContent.PAWN when square.PieceType == PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhitePawn.png"); break;
-                case SquareContent.BISHOP when square.PieceType == PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteBishop.png"); break;
-                case SquareContent.KNIGHT when square.PieceType == PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteKnight.png"); break;
-                case SquareContent.QUEEN when square.PieceType == PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteQueen.png"); break;
-                case SquareContent.KING when square.PieceType == PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteKing.png"); break;
-                case SquareContent.ROCK when square.PieceType == PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteRock.png"); break;
+                case SquareContent.PAWN when square.PieceType == Boardlib.PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhitePawn.png"); break;
+                case SquareContent.BISHOP when square.PieceType == Boardlib.PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteBishop.png"); break;
+                case SquareContent.KNIGHT when square.PieceType == Boardlib.PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteKnight.png"); break;
+                case SquareContent.QUEEN when square.PieceType == Boardlib.PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteQueen.png"); break;
+                case SquareContent.KING when square.PieceType == Boardlib.PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteKing.png"); break;
+                case SquareContent.ROCK when square.PieceType == Boardlib.PieceType.WHITE: btn.BackgroundImage = Image.FromFile("Images/WhiteRock.png"); break;
             }
 
             btn.BackgroundImageLayout = ImageLayout.Stretch;

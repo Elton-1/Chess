@@ -143,7 +143,11 @@ namespace Boardlib
                 bool exists = false;
                 foreach (var valid in BoardValidMoves.validMoves)
                 {
-                    if (squares[row1, col1] == valid.Item1 && valid.Item2 == row2 && valid.Item3 == col2) exists = true;
+                    if (squares[row1, col1] == valid.Item1 && valid.Item2 == row2 && valid.Item3 == col2)
+                    {
+                        exists = true;
+                        break;
+                    }
                 }
 
                 if (exists)
@@ -190,31 +194,54 @@ namespace Boardlib
 
         /*
             This is also used to move for black if you are using an chess engine
-            The moving flag is used to move the squares for the opponent
+            The moving flag is used to move the squares for the opponent.
+            It makes an assumption that the chess engine always give an validMove.
+            The supported chess Engine is stockfish.
         */
         internal void SwapSqueres(int row1, int col1, int row2, int col2, bool checkEmptySquare = true, bool moving = false, bool updateValidMoves = false)
         {
-            bool moved = false;
-            //Trying to move with black
-            if (moving)
-            {
-                WhitesTurn = !WhitesTurn;
-                
-                Board opponent = new Board(getOpponentPieceType(), squares);
-                opponent.MovePiece(row1, col1, row2, col1, ref moved);
-                this.squares = opponent.squares;
-            }
 
-            if (!moved)
+            //Trying to move with black
+            if (moving) WhitesTurn = !WhitesTurn;
+
+            int initalKingCol = 4;
+
+            if (moving && col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 > initalKingCol)
+            {
+                var copy = squares[row1, 7];
+                squares[row1, 7] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
+                squares[row1, 5] = copy;
+
+                var king = squares[row1, initalKingCol];
+                squares[row1, initalKingCol] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
+                squares[row1, initalKingCol + 2] = king;
+
+            }
+            else if (moving && col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 < initalKingCol)
+            {
+                var copy = squares[row1, 0];
+                squares[row1, 0] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
+                squares[row1, 3] = copy;
+
+                var king = squares[row1, initalKingCol];
+                squares[row1, initalKingCol] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
+                squares[row1, initalKingCol - 2] = king;
+            }
+            else
             {
                 Square copy = squares[row1, col1];
                 squares[row1, col1] = squares[row2, col2];
                 squares[row2, col2] = copy;
             }
+           
 
             if (updateValidMoves) BoardValidMoves = new ValidMoves(this);
 
-            if (checkEmptySquare && squares[row1, col1].Type != SquareContent.EMPTY) squares[row1, col1].ChangeType(SquareContent.EMPTY);
+            if (checkEmptySquare && squares[row1, col1].Type != SquareContent.EMPTY)
+            {
+                squares[row1, col1].ChangeType(SquareContent.EMPTY);
+                squares[row1, col1].ChangePieceType(PieceType.EMPTY);
+            }
         }
 
         private void InitalizePieces(int x, int y, PieceType player)
