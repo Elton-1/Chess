@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Boardlib
 {
@@ -52,14 +53,19 @@ namespace Boardlib
                 Board opponent = Board.getOpponentBoard();
                 ValidMoves opponentValidMoves = new ValidMoves(opponent);
                 //Loop through those two squares
+
                 for (int i = initalKingCol; i <= initalRockCol; i++)
                 {
                     foreach (var moves in opponentValidMoves.validMoves)
                     {
                         //if that squares is ocyopyed
-                        if (moves.Item2 == initalKingRow && moves.Item3 == i) castle = false;
+                        if (moves.Item2 == initalKingRow && moves.Item3 == i)
+                        {
+                            return false;
+                        }
                     }
                 }
+
             }
             else return false;
 
@@ -99,7 +105,7 @@ namespace Boardlib
                     foreach (var moves in opponentValidMoves.validMoves)
                     {
                         //if that squares is ocyopyed
-                        if (moves.Item2 == initalKingRow && moves.Item3 == i) castle = false;
+                        if (moves.Item2 == initalKingRow && moves.Item3 == i) return false;
                     }
                 }
             }

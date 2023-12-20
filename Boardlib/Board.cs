@@ -192,21 +192,13 @@ namespace Boardlib
             return false;
         }
 
-        /*
-            This is also used to move for black if you are using an chess engine
-            The moving flag is used to move the squares for the opponent.
-            It makes an assumption that the chess engine always give an validMove.
-            The supported chess Engine is stockfish.
-        */
-        internal void SwapSqueres(int row1, int col1, int row2, int col2, bool checkEmptySquare = true, bool moving = false, bool updateValidMoves = false)
+        internal void MoveOpponent(int row1, int col1, int row2, int col2)
         {
-
-            //Trying to move with black
-            if (moving) WhitesTurn = !WhitesTurn;
+            WhitesTurn = !WhitesTurn;
 
             int initalKingCol = 4;
 
-            if (moving && col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 > initalKingCol)
+            if (col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 > initalKingCol)
             {
                 var copy = squares[row1, 7];
                 squares[row1, 7] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
@@ -217,7 +209,7 @@ namespace Boardlib
                 squares[row1, initalKingCol + 2] = king;
 
             }
-            else if (moving && col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 < initalKingCol)
+            else if (col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 < initalKingCol)
             {
                 var copy = squares[row1, 0];
                 squares[row1, 0] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
@@ -229,11 +221,18 @@ namespace Boardlib
             }
             else
             {
-                Square copy = squares[row1, col1];
-                squares[row1, col1] = squares[row2, col2];
-                squares[row2, col2] = copy;
+                SwapSqueres(row1, col1, row2, col2);
             }
-           
+
+            BoardValidMoves = new ValidMoves(this);
+        }
+
+        internal void SwapSqueres(int row1, int col1, int row2, int col2, bool checkEmptySquare = true, bool moving = false, bool updateValidMoves = false)
+        {
+
+            Square copy = squares[row1, col1];
+            squares[row1, col1] = squares[row2, col2];
+            squares[row2, col2] = copy;
 
             if (updateValidMoves) BoardValidMoves = new ValidMoves(this);
 
@@ -577,7 +576,7 @@ namespace Boardlib
 
         public char? GetPieceFen(Square square)
         {
-            switch(square.Type) 
+            switch (square.Type)
             {
                 case SquareContent.EMPTY: return null;
                 case SquareContent.KING when (square.PieceType == PieceType.WHITE): return 'K';

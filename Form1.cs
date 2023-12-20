@@ -38,16 +38,9 @@ namespace Chess
             Print(board);
             Board = board;
 
-            if(PieceType == Boardlib.PieceType.BLACK)
+            if (PieceType == Boardlib.PieceType.BLACK)
             {
-                ChessEngine engine = new ChessEngine("Stockfish/Stockfish.exe");
-
-                string bestMove = engine.GetBestMove(Board.GetFen(), 100);
-                char[] letters = bestMove.ToCharArray();
-                if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
-                    Board.SwapSqueres(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y, true, true, true);
-                else
-                    Board.SwapSqueres(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y, true, true, true);
+                PlayEngine();
             }
         }
 
@@ -98,9 +91,7 @@ namespace Chess
             int row = position.Item1;
             int col = position.Item2;
 
-            MessageBox.Show(Board.getSquares()[row, col].Type + " " + Board.getSquares()[row, col].PieceType + " Your pieces: " + PieceType);
-
-            if (!first && Board.getSquares()[row, col].PieceType == this.PieceType && Board.getSquares()[row, col].Type != SquareContent.ROCK 
+            if (!first && Board.getSquares()[row, col].PieceType == this.PieceType && Board.getSquares()[row, col].Type != SquareContent.ROCK
                 || Board.getSquares()[row, col].Type == SquareContent.ROCK && Board.getSquares()[row, col].PieceType == this.PieceType && (!KingWasPreviouslyClicked || Board.KingMoved))
                 first = true;
 
@@ -108,8 +99,6 @@ namespace Chess
                 KingWasPreviouslyClicked = true;
             else
                 KingWasPreviouslyClicked = false;
-
-            MessageBox.Show(first.ToString());
 
             if (first)
             {
@@ -127,18 +116,10 @@ namespace Chess
                     bool moved = false;
                     Board.MovePiece(MoveFrom.Item1, MoveFrom.Item2, row, col, ref moved);
                     if (!moved) first = true;
-                  
+
                     else
                     {
-                        //Play engine
-                        ChessEngine engine = new ChessEngine("Stockfish/Stockfish.exe");
-
-                        string bestMove = engine.GetBestMove(Board.GetFen(), 100);
-                        char[] letters = bestMove.ToCharArray();
-                        if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
-                            Board.SwapSqueres(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y, true, true, true);
-                        else
-                            Board.SwapSqueres(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y, true, true, true);
+                        PlayEngine();
                     }
                 }
 
@@ -161,6 +142,18 @@ namespace Chess
                     InitalizeSquare(piece, button);
                 }
             }
+        }
+
+        private void PlayEngine()
+        {
+            ChessEngine engine = new ChessEngine("Stockfish/Stockfish.exe");
+
+            string bestMove = engine.GetBestMove(Board.GetFen(), 100);
+            char[] letters = bestMove.ToCharArray();
+            if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
+                Board.MoveOpponent(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y);
+            else
+                Board.MoveOpponent(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y);
         }
 
         private void InitalizeSquare(Square square, Button btn)
