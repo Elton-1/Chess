@@ -250,33 +250,59 @@ namespace Boardlib
 
             Square square = null;
 
-            switch (x)
+            if (PlayerPieceType == PieceType.WHITE)
             {
-                //Opponent
-                case 0 when y == 0: square = new Square(SquareContent.ROCK, opponentPieces); break;
-                case 0 when y == 1: square = new Square(SquareContent.KNIGHT, opponentPieces); break;
-                case 0 when y == 2: square = new Square(SquareContent.BISHOP, opponentPieces); break;
-                case 0 when y == 3: square = new Square(SquareContent.QUEEN, opponentPieces); break;
-                case 0 when y == 4: square = new Square(SquareContent.KING, opponentPieces); break;
-                case 0 when y == 3: square = new Square(SquareContent.KING, opponentPieces); break;
-                case 0 when y == 4: square = new Square(SquareContent.QUEEN, opponentPieces); break;
-                case 0 when y == 5: square = new Square(SquareContent.BISHOP, opponentPieces); break;
-                case 0 when y == 6: square = new Square(SquareContent.KNIGHT, opponentPieces); break;
-                case 0 when y == 7: square = new Square(SquareContent.ROCK, opponentPieces); break;
-                case 1: square = new Square(SquareContent.PAWN, opponentPieces); break;
+                switch (x)
+                {
+                    //Opponent
+                    case 0 when y == 0: square = new Square(SquareContent.ROCK, opponentPieces); break;
+                    case 0 when y == 1: square = new Square(SquareContent.KNIGHT, opponentPieces); break;
+                    case 0 when y == 2: square = new Square(SquareContent.BISHOP, opponentPieces); break;
+                    case 0 when y == 4: square = new Square(SquareContent.KING, opponentPieces); break;
+                    case 0 when y == 3: square = new Square(SquareContent.QUEEN, opponentPieces); break;
+                    case 0 when y == 5: square = new Square(SquareContent.BISHOP, opponentPieces); break;
+                    case 0 when y == 6: square = new Square(SquareContent.KNIGHT, opponentPieces); break;
+                    case 0 when y == 7: square = new Square(SquareContent.ROCK, opponentPieces); break;
+                    case 1: square = new Square(SquareContent.PAWN, opponentPieces); break;
 
-                //Player
-                case 6: square = new Square(SquareContent.PAWN, player); break;
-                case 7 when y == 0: square = new Square(SquareContent.ROCK, player); break;
-                case 7 when y == 1: square = new Square(SquareContent.KNIGHT, player); break;
-                case 7 when y == 2: square = new Square(SquareContent.BISHOP, player); break;
-                case 7 when y == 3: square = new Square(SquareContent.QUEEN, player); break;
-                case 7 when y == 4: square = new Square(SquareContent.KING, player); break;
-                case 7 when y == 3: square = new Square(SquareContent.KING, player); break;
-                case 7 when y == 4: square = new Square(SquareContent.QUEEN, player); break;
-                case 7 when y == 5: square = new Square(SquareContent.BISHOP, player); break;
-                case 7 when y == 6: square = new Square(SquareContent.KNIGHT, player); break;
-                case 7 when y == 7: square = new Square(SquareContent.ROCK, player); break;
+                    //Player
+                    case 6: square = new Square(SquareContent.PAWN, player); break;
+                    case 7 when y == 0: square = new Square(SquareContent.ROCK, player); break;
+                    case 7 when y == 1: square = new Square(SquareContent.KNIGHT, player); break;
+                    case 7 when y == 2: square = new Square(SquareContent.BISHOP, player); break;
+                    case 7 when y == 4: square = new Square(SquareContent.KING, player); break;
+                    case 7 when y == 3: square = new Square(SquareContent.QUEEN, player); break;
+                    case 7 when y == 5: square = new Square(SquareContent.BISHOP, player); break;
+                    case 7 when y == 6: square = new Square(SquareContent.KNIGHT, player); break;
+                    case 7 when y == 7: square = new Square(SquareContent.ROCK, player); break;
+                }
+            }
+            else
+            {
+                switch (x)
+                {
+                    //Opponent
+                    case 0 when y == 0: square = new Square(SquareContent.ROCK, opponentPieces); break;
+                    case 0 when y == 1: square = new Square(SquareContent.KNIGHT, opponentPieces); break;
+                    case 0 when y == 2: square = new Square(SquareContent.BISHOP, opponentPieces); break;
+                    case 0 when y == 3: square = new Square(SquareContent.KING, opponentPieces); break;
+                    case 0 when y == 4: square = new Square(SquareContent.QUEEN, opponentPieces); break;
+                    case 0 when y == 5: square = new Square(SquareContent.BISHOP, opponentPieces); break;
+                    case 0 when y == 6: square = new Square(SquareContent.KNIGHT, opponentPieces); break;
+                    case 0 when y == 7: square = new Square(SquareContent.ROCK, opponentPieces); break;
+                    case 1: square = new Square(SquareContent.PAWN, opponentPieces); break;
+
+                    //Player
+                    case 6: square = new Square(SquareContent.PAWN, player); break;
+                    case 7 when y == 0: square = new Square(SquareContent.ROCK, player); break;
+                    case 7 when y == 1: square = new Square(SquareContent.KNIGHT, player); break;
+                    case 7 when y == 2: square = new Square(SquareContent.BISHOP, player); break;
+                    case 7 when y == 3: square = new Square(SquareContent.KING, player); break;
+                    case 7 when y == 4: square = new Square(SquareContent.QUEEN, player); break;
+                    case 7 when y == 5: square = new Square(SquareContent.BISHOP, player); break;
+                    case 7 when y == 6: square = new Square(SquareContent.KNIGHT, player); break;
+                    case 7 when y == 7: square = new Square(SquareContent.ROCK, player); break;
+                }
             }
 
             if (square != null) squares[x, y] = square;

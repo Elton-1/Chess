@@ -14,6 +14,7 @@ namespace Chess
     public partial class Form1 : Form
     {
         private bool first = true;
+        private bool KingWasPreviouslyClicked = false;
         private const int BoardSize = 8;
         private Button[,] chessButtons;
         private Board Board = null;
@@ -97,8 +98,18 @@ namespace Chess
             int row = position.Item1;
             int col = position.Item2;
 
-            if (!first && Board.getSquares()[row, col].PieceType == PieceType && Board.getSquares()[row, col].Type != SquareContent.ROCK)
+            MessageBox.Show(Board.getSquares()[row, col].Type + " " + Board.getSquares()[row, col].PieceType + " Your pieces: " + PieceType);
+
+            if (!first && Board.getSquares()[row, col].PieceType == this.PieceType && Board.getSquares()[row, col].Type != SquareContent.ROCK 
+                || Board.getSquares()[row, col].Type == SquareContent.ROCK && Board.getSquares()[row, col].PieceType == this.PieceType && (!KingWasPreviouslyClicked || Board.KingMoved))
                 first = true;
+
+            if (Board.getSquares()[row, col].Type == SquareContent.KING && Board.getSquares()[row, col].PieceType == PieceType)
+                KingWasPreviouslyClicked = true;
+            else
+                KingWasPreviouslyClicked = false;
+
+            MessageBox.Show(first.ToString());
 
             if (first)
             {
@@ -116,6 +127,7 @@ namespace Chess
                     bool moved = false;
                     Board.MovePiece(MoveFrom.Item1, MoveFrom.Item2, row, col, ref moved);
                     if (!moved) first = true;
+                  
                     else
                     {
                         //Play engine
