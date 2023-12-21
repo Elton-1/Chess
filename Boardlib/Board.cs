@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Boardlib
 {
@@ -469,7 +470,8 @@ namespace Boardlib
                     {
                         switch (squares[i, j].Type)
                         {
-                            case SquareContent.PAWN: ValidMoves.PawnValidMoves(i, j, this, validMoves, PlayerPieceType); break;
+                            case SquareContent.PAWN when PlayerPieceType == PieceType.WHITE: ValidMoves.PawnValidMoves(i, j, this, validMoves, PlayerPieceType); break;
+                            case SquareContent.PAWN when PlayerPieceType == PieceType.BLACK: ValidMoves.PawnValidMoves(i, j, this, validMoves, PlayerPieceType, GettingOpponentBlackValid: true); break;
                             case SquareContent.KNIGHT: ValidMoves.KnightValidMoves(i, j, this, validMoves, PlayerPieceType); break;
                             case SquareContent.BISHOP: ValidMoves.BishopValidMoves(i, j, this, validMoves, PlayerPieceType); break;
                             case SquareContent.ROCK: ValidMoves.RockValidMoves(i, j, this, validMoves, PlayerPieceType); break;

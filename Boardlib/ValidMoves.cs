@@ -171,10 +171,11 @@ namespace Boardlib
             }
         }
 
-        static internal void PawnValidMoves(int row, int col, Board Board, List<(Square, int, int)> validMoves, PieceType opponentPieceType, bool swap = false)
+        //Ignore the last flag
+        static internal void PawnValidMoves(int row, int col, Board Board, List<(Square, int, int)> validMoves, PieceType opponentPieceType, bool swap = false, bool GettingOpponentBlackValid = false)
         {
             //This checks for white
-            if (opponentPieceType == PieceType.BLACK || swap)
+            if ((opponentPieceType == PieceType.BLACK || swap) && !GettingOpponentBlackValid)
             {
                 //if theres an row up the pawn and that square is empty then add that square
                 if (row - 1 >= 0)
