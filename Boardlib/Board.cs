@@ -119,7 +119,6 @@ namespace Boardlib
                     moved = true;
                 }
             }
-            //Else if we are trying to castle in the right
             else if (!KingIsInCheck()
             && row1 == initalKingRow && col1 == initalKingCol
             && row2 == initalKingRow && col2 == Board.COL - 1
@@ -197,44 +196,48 @@ namespace Boardlib
             WhitesTurn = !WhitesTurn;
 
             int initalKingCol = 4;
+            int movingRightRock = 5;
+            int movingLeftRock = 3; 
+
+            if (PlayerPieceType == PieceType.BLACK)
+            {
+                initalKingCol = 3;
+                movingRightRock = 4;
+                movingLeftRock = 2;
+            }
 
             if (col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 > initalKingCol)
             {
                 var copy = squares[row1, 7];
                 squares[row1, 7] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
-                squares[row1, 5] = copy;
+                squares[row1, movingRightRock] = copy;
 
-                var king = squares[row1, initalKingCol];
-                squares[row1, initalKingCol] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
-                squares[row1, initalKingCol + 2] = king;
+                SwapSqueres(row1, initalKingCol, row1, initalKingCol + 2);
+
 
             }
             else if (col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 < initalKingCol)
             {
                 var copy = squares[row1, 0];
                 squares[row1, 0] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
-                squares[row1, 3] = copy;
+                squares[row1, movingLeftRock] = copy;
 
-                var king = squares[row1, initalKingCol];
-                squares[row1, initalKingCol] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
-                squares[row1, initalKingCol - 2] = king;
+                SwapSqueres(row1, initalKingCol, row1, initalKingCol - 2);
             }
             else
             {
                 SwapSqueres(row1, col1, row2, col2);
             }
 
+
             BoardValidMoves = new ValidMoves(this);
         }
 
-        internal void SwapSqueres(int row1, int col1, int row2, int col2, bool checkEmptySquare = true, bool moving = false, bool updateValidMoves = false)
+        internal void SwapSqueres(int row1, int col1, int row2, int col2, bool checkEmptySquare = true)
         {
-
             Square copy = squares[row1, col1];
             squares[row1, col1] = squares[row2, col2];
             squares[row2, col2] = copy;
-
-            if (updateValidMoves) BoardValidMoves = new ValidMoves(this);
 
             if (checkEmptySquare && squares[row1, col1].Type != SquareContent.EMPTY)
             {
