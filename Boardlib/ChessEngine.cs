@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 class ChessEngine
 {
@@ -21,7 +22,7 @@ class ChessEngine
         return stockfishProcess.StandardOutput.ReadLine();
     }
 
-    public string GetBestMove(String fen, int think = 100)
+    public async Task<string> GetBestMove(String fen, int think = 100)
     {
         //Start the process
         stockfishProcess = new Process();
@@ -38,7 +39,7 @@ class ChessEngine
         // Keep reading the output until you find the best move or another relevant line
         while (true)
         {
-            string line = stockfishProcess.StandardOutput.ReadLine();
+            string line = await stockfishProcess.StandardOutput.ReadLineAsync();
             if (line != null)
             {
                 if (line.StartsWith("bestmove"))

@@ -23,7 +23,22 @@ namespace Chess
         private Color WhiteSquareViewed = Color.FromArgb(89, 119, 56);
         private PieceType? PieceType = null;
 
+        int buttonSize = 60;
+
         public Form1()
+        {
+            InitializeComponent();
+            InitializeChessboard();
+            this.Resize += Form1_Resize;
+            Play();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            CenterChessboard();
+        }
+
+        private void Play()
         {
             Random rn = new Random();
 
@@ -33,8 +48,6 @@ namespace Chess
 
             PieceType = board.PlayerPieceType;
 
-            InitializeComponent();
-            InitializeChessboard();
             Print(board);
             Board = board;
 
@@ -47,7 +60,6 @@ namespace Chess
         private void InitializeChessboard()
         {
             chessButtons = new Button[BoardSize, BoardSize];
-            int buttonSize = 50; // Adjust button size as needed
 
             for (int row = 0; row < BoardSize; row++)
             {
@@ -64,7 +76,7 @@ namespace Chess
                         FlatStyle = FlatStyle.Flat
                     };
 
-                    button.Click += ChessButton_Click;
+                    button.Click += ChessButton_ClickAsync;
 
                     Controls.Add(button);
                     chessButtons[row, col] = button;
@@ -73,60 +85,103 @@ namespace Chess
 
             // Calculate the total size of the chessboard and center it in the form
             int boardTotalSize = buttonSize * BoardSize;
-            int formWidth = boardTotalSize + 20; // Add some padding
-            int formHeight = boardTotalSize + 40; // Add some padding
+            int formWidth = boardTotalSize; // Add some padding
+            int formHeight = boardTotalSize; // Add some padding
 
             ClientSize = new Size(formWidth, formHeight);
+            this.MinimumSize = new Size(BoardSize * buttonSize + SystemInformation.FrameBorderSize.Width * 2,
+                                BoardSize * buttonSize + SystemInformation.FrameBorderSize.Height * 2 + 20 + 40);
             CenterToScreen();
+            CenterChessboard();
         }
 
-        private void ChessButton_Click(object sender, EventArgs e)
+        private void CenterChessboard()
         {
-            //Reset the btn styles
-            ResetBtnStyle();
+            int totalWidth = BoardSize * buttonSize;
+            int totalHeight = BoardSize * buttonSize;
 
-            // Handle button click if needed
-            Button clickedButton = (Button)sender;
-            Tuple<int, int> position = (Tuple<int, int>)clickedButton.Tag;
-            int row = position.Item1;
-            int col = position.Item2;
+            int xOffset = (ClientSize.Width - totalWidth) / 2;
+            int yOffset = (ClientSize.Height - totalHeight) / 2;
 
-            if (!first && Board.getSquares()[row, col].PieceType == this.PieceType && Board.getSquares()[row, col].Type != SquareContent.ROCK
-                || Board.getSquares()[row, col].Type == SquareContent.ROCK && Board.getSquares()[row, col].PieceType == this.PieceType && (!KingWasPreviouslyClicked || Board.KingMoved))
-                first = true;
-
-            if (Board.getSquares()[row, col].Type == SquareContent.KING && Board.getSquares()[row, col].PieceType == PieceType)
-                KingWasPreviouslyClicked = true;
-            else
-                KingWasPreviouslyClicked = false;
-
-            if (first)
+            for (int row = 0; row < BoardSize; row++)
             {
-                MoveFrom = new Tuple<int, int>(row, col);
-
-                //Highlight the validMoves
-
-                Square piece = Board.getSquares()[position.Item1, position.Item2];
-                HighlightValidMoves(Board, piece);
-            }
-            else
-            {
-                if (MoveFrom != null)
+                for (int col = 0; col < BoardSize; col++)
                 {
-                    bool moved = false;
-                    Board.MovePiece(MoveFrom.Item1, MoveFrom.Item2, row, col, ref moved);
-                    if (!moved) first = true;
+                    chessButtons[row, col].Location = new Point(col * buttonSize + xOffset, row * buttonSize + yOffset);
+                }
+            }
+        }
 
-                    else
+
+        private async void ChessButton_ClickAsync(object sender, EventArgs e)
+        {
+            if (PieceType == Boardlib.PieceType.WHITE && Board.WhitesTurn || PieceType == Boardlib.PieceType.BLACK && !Board.WhitesTurn)
+            {
+                //Reset the btn styles
+                ResetBtnStyle();
+
+                // Handle button click if needed
+                Button clickedButton = (Button)sender;
+                Tuple<int, int> position = (Tuple<int, int>)clickedButton.Tag;
+                int row = position.Item1;
+                int col = position.Item2;
+
+                if (!first && Board.getSquares()[row, col].PieceType == this.PieceType && Board.getSquares()[row, col].Type != SquareContent.ROCK
+                    || Board.getSquares()[row, col].Type == SquareContent.ROCK && Board.getSquares()[row, col].PieceType == this.PieceType && (!KingWasPreviouslyClicked || Board.KingMoved))
+                    first = true;
+
+                if (Board.getSquares()[row, col].Type == SquareContent.KING && Board.getSquares()[row, col].PieceType == PieceType)
+                    KingWasPreviouslyClicked = true;
+                else
+                    KingWasPreviouslyClicked = false;
+
+                if (first)
+                {
+                    MoveFrom = new Tuple<int, int>(row, col);
+
+                    //Highlight the validMoves
+
+                    Square piece = Board.getSquares()[position.Item1, position.Item2];
+                    HighlightValidMoves(Board, piece);
+                }
+                else
+                {
+                    if (MoveFrom != null)
                     {
-                        PlayEngine();
+                        bool moved = false;
+                        Board.MovePiece(MoveFrom.Item1, MoveFrom.Item2, row, col, ref moved);
+                        Print(Board);
+                        if (!moved) first = true;
+
+                        else
+                        {
+                            await PlayEngine();
+                        }
+                        if (Board.Won())
+                        {
+                            Print(Board);
+                            MessageBox.Show("You won!");
+                            Play();
+                        }
+                        else if (Board.Draw())
+                        {
+                            Print(Board);
+                            MessageBox.Show("Draw!");
+                            Play();
+                        }
+                        if (Board.Lost())
+                        {
+                            Print(Board);
+                            MessageBox.Show("You Lost!");
+                            Play();
+                        }
                     }
+
                 }
 
+                first = !first;
+                Print(Board);
             }
-
-            first = !first;
-            Print(Board);
         }
 
         private void Print(Board board)
@@ -144,11 +199,11 @@ namespace Chess
             }
         }
 
-        private void PlayEngine()
+        private async Task PlayEngine()
         {
             ChessEngine engine = new ChessEngine("Stockfish/Stockfish.exe");
 
-            string bestMove = engine.GetBestMove(Board.GetFen(), 100);
+            string bestMove = await engine.GetBestMove(Board.GetFen(), 1000);
             char[] letters = bestMove.ToCharArray();
             if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
                 Board.MoveOpponent(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y);
