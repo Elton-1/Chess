@@ -25,12 +25,13 @@ namespace Chess
         private Label label1 = null;
         private Label label2 = null;
 
-        int buttonSize = 60;
+        int buttonSize = 80;
 
         public Form1()
         {
             InitializeComponent();
             InitializeChessboard();
+            this.BackColor = Color.FromArgb(235, 236, 208);
             this.Resize += Form1_Resize;
             _ = Play();
         }
@@ -302,7 +303,7 @@ namespace Chess
             {
                 for(int j = 0; j < Board.ROW; j++)
                 {
-                    if (Board.getSquares()[i, j].PieceType == Boardlib.PieceType.BLACK) eval -= GetPointForPiece(Board.getSquares()[i, j]);
+                    if (Board.getSquares()[i, j].PieceType == Board.getOpponentPieceType()) eval -= GetPointForPiece(Board.getSquares()[i, j]);
                     else eval += GetPointForPiece(Board.getSquares()[i, j]);
                 }
             }
@@ -328,8 +329,10 @@ namespace Chess
         {
             Controls.Remove(label1);
             label1 = new Label();
-            label1.Width = BoardSize * buttonSize;
-            label1.BackColor = Color.Bisque;
+            label1.ForeColor = Color.White;
+            label1.BackColor = Color.FromArgb(119, 149, 86);
+            label1.Width = 100;
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             label1.Location = new Point(chessButtons[0, 0].Location.X, chessButtons[0, 0].Location.Y - buttonSize);
             if (Board != null) UpdateLabelPoints();
 
@@ -337,9 +340,11 @@ namespace Chess
 
             Controls.Remove(label2);
             label2 = new Label();
-            label2.Width = BoardSize * buttonSize;
-            label2.BackColor = Color.Bisque;
-            label2.Location = new Point(chessButtons[BoardSize - 1, 0].Location.X, chessButtons[BoardSize - 1, 0].Location.Y + (buttonSize + 30));
+            label2.BackColor = Color.FromArgb(119, 149, 86);
+            label2.ForeColor = Color.White;
+            label2.Width = 100;
+            label2.TextAlign = ContentAlignment.MiddleCenter;
+            label2.Location = new Point(chessButtons[BoardSize - 1, 0].Location.X, chessButtons[BoardSize - 1, 0].Location.Y + (buttonSize + 45));
             if (Board != null) UpdateLabelPoints();
 
             Controls.Add(label2);
