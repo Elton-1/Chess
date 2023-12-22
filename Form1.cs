@@ -38,7 +38,7 @@ namespace Chess
             CenterChessboard();
         }
 
-        private void Play()
+        private async Task Play()
         {
             Random rn = new Random();
 
@@ -53,8 +53,9 @@ namespace Chess
 
             if (PieceType == Boardlib.PieceType.BLACK)
             {
-                PlayEngine();
+                await PlayEngine();
             }
+            Print(Board);
         }
 
         private void InitializeChessboard()
@@ -152,28 +153,43 @@ namespace Chess
                         Board.MovePiece(MoveFrom.Item1, MoveFrom.Item2, row, col, ref moved);
                         Print(Board);
                         if (!moved) first = true;
-
                         else
                         {
-                            await PlayEngine();
+                            if (Board.Won())
+                            {
+                                Print(Board);
+                                MessageBox.Show("You Won!");
+                                await Play();
+                                return;
+                            }
+                            else if (Board.Draw())
+                            {
+                                Print(Board);
+                                MessageBox.Show("Draw!");
+                                await Play();
+                                return;
+                            }else await PlayEngine();
                         }
                         if (Board.Won())
                         {
                             Print(Board);
                             MessageBox.Show("You won!");
-                            Play();
+                            await Play();
+                            return;
                         }
                         else if (Board.Draw())
                         {
                             Print(Board);
                             MessageBox.Show("Draw!");
-                            Play();
+                            await Play();
+                            return;
                         }
                         if (Board.Lost())
                         {
                             Print(Board);
                             MessageBox.Show("You Lost!");
-                            Play();
+                            await Play();
+                            return;
                         }
                     }
 
@@ -203,7 +219,7 @@ namespace Chess
         {
             ChessEngine engine = new ChessEngine("Stockfish/Stockfish.exe");
 
-            string bestMove = await engine.GetBestMove(Board.GetFen(), 1000);
+            string bestMove = await engine.GetBestMove(Board.GetFen(), 1);
             char[] letters = bestMove.ToCharArray();
             if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
                 Board.MoveOpponent(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y);

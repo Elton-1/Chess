@@ -232,6 +232,7 @@ namespace Boardlib
 
 
             BoardValidMoves = new ValidMoves(this);
+            PromotePawns();
         }
 
         internal void SwapSqueres(int row1, int col1, int row2, int col2, bool checkEmptySquare = true)
@@ -492,9 +493,8 @@ namespace Boardlib
             {
                 for (int j = 0; j < Board.COL; j++)
                 {
-                    //If that square is an black pawn
-                    if (squares[i, j].Type == SquareContent.PAWN && squares[i, j].PieceType == PieceType.WHITE && i == 0) squares[i, j] = new Square(SquareContent.QUEEN, PieceType.WHITE);
-                    else if (squares[i, j].Type == SquareContent.PAWN && squares[i, j].PieceType == PieceType.BLACK && i == (Board.ROW - 1)) squares[i, j] = new Square(SquareContent.QUEEN, PieceType.BLACK);
+                    if (squares[i, j].Type == SquareContent.PAWN && squares[i, j].PieceType == PlayerPieceType && i == 0) squares[i, j] = new Square(SquareContent.QUEEN, PlayerPieceType);
+                    else if (squares[i, j].Type == SquareContent.PAWN && squares[i, j].PieceType == getOpponentPieceType() && i == (Board.ROW - 1)) squares[i, j] = new Square(SquareContent.QUEEN, getOpponentPieceType());
                 }
             }
         }
