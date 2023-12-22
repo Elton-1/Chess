@@ -30,7 +30,7 @@ namespace Chess
             InitializeComponent();
             InitializeChessboard();
             this.Resize += Form1_Resize;
-            Play();
+            _ = Play();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -170,21 +170,14 @@ namespace Chess
                                 return;
                             }else await PlayEngine();
                         }
-                        if (Board.Won())
-                        {
-                            Print(Board);
-                            MessageBox.Show("You won!");
-                            await Play();
-                            return;
-                        }
-                        else if (Board.Draw())
+                        if (Board.Draw())
                         {
                             Print(Board);
                             MessageBox.Show("Draw!");
                             await Play();
                             return;
                         }
-                        if (Board.Lost())
+                        else if (Board.Lost())
                         {
                             Print(Board);
                             MessageBox.Show("You Lost!");

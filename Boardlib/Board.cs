@@ -198,7 +198,7 @@ namespace Boardlib
 
             int initalKingCol = 4;
             int movingRightRock = 5;
-            int movingLeftRock = 3; 
+            int movingLeftRock = 3;
 
             if (PlayerPieceType == PieceType.BLACK)
             {
@@ -207,17 +207,16 @@ namespace Boardlib
                 movingLeftRock = 2;
             }
 
-            if (col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 > initalKingCol)
+            if (col1 == initalKingCol && squares[row1, col1].Type == SquareContent.KING && (row1 == Board.ROW - 1 || row1 == 0) && col2 > initalKingCol + 1)
             {
                 var copy = squares[row1, 7];
                 squares[row1, 7] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
                 squares[row1, movingRightRock] = copy;
 
                 SwapSqueres(row1, initalKingCol, row1, initalKingCol + 2);
-
-
             }
-            else if (col1 == initalKingCol && (row1 == Board.ROW - 1 || row1 == 0) && col2 < initalKingCol)
+
+            else if (col1 == initalKingCol && squares[row1, col1].Type == SquareContent.KING && (row1 == Board.ROW - 1 || row1 == 0) && col2 < initalKingCol - 1)
             {
                 var copy = squares[row1, 0];
                 squares[row1, 0] = new Square(SquareContent.EMPTY, PieceType.EMPTY);
