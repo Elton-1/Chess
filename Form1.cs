@@ -22,6 +22,8 @@ namespace Chess
         private Color DarkSquareViewed = Color.FromArgb(205, 206, 178);
         private Color WhiteSquareViewed = Color.FromArgb(89, 119, 56);
         private PieceType? PieceType = null;
+        private Label label1 = null;
+        private Label label2 = null;
 
         int buttonSize = 60;
 
@@ -36,6 +38,7 @@ namespace Chess
         private void Form1_Resize(object sender, EventArgs e)
         {
             CenterChessboard();
+            AddComponents();
         }
 
         private async Task Play()
@@ -47,7 +50,7 @@ namespace Chess
                 board = new Board(Boardlib.PieceType.BLACK);
 
             PieceType = board.PlayerPieceType;
-
+            AddComponents();
             Print(board);
             Board = board;
 
@@ -86,14 +89,15 @@ namespace Chess
 
             // Calculate the total size of the chessboard and center it in the form
             int boardTotalSize = buttonSize * BoardSize;
-            int formWidth = boardTotalSize; // Add some padding
-            int formHeight = boardTotalSize; // Add some padding
+            int formWidth = boardTotalSize;
+            int formHeight = boardTotalSize;
 
             ClientSize = new Size(formWidth, formHeight);
             this.MinimumSize = new Size(BoardSize * buttonSize + SystemInformation.FrameBorderSize.Width * 2,
                                 BoardSize * buttonSize + SystemInformation.FrameBorderSize.Height * 2 + 20 + 40);
             CenterToScreen();
             CenterChessboard();
+
         }
 
         private void CenterChessboard()
@@ -151,7 +155,9 @@ namespace Chess
                     {
                         bool moved = false;
                         Board.MovePiece(MoveFrom.Item1, MoveFrom.Item2, row, col, ref moved);
+                        if(Board != null) UpdateLabelPoints();
                         Print(Board);
+
                         if (!moved) first = true;
                         else
                         {
@@ -168,7 +174,11 @@ namespace Chess
                                 MessageBox.Show("Draw!");
                                 await Play();
                                 return;
-                            }else await PlayEngine();
+                            }
+
+                            await PlayEngine();
+
+                            if (Board != null) UpdateLabelPoints();
                         }
                         if (Board.Draw())
                         {
@@ -283,6 +293,68 @@ namespace Chess
                     button.ForeColor = (position.Item1 + position.Item2) % 2 == 0 ? Color.FromArgb(235, 236, 208) : Color.FromArgb(119, 149, 86);
                 }
             }
+        }
+
+        private int Evaluation()
+        {
+            int eval = 0;
+            for(int i = 0; i < Board.COL; i++)
+            {
+                for(int j = 0; j < Board.ROW; j++)
+                {
+                    if (Board.getSquares()[i, j].PieceType == Boardlib.PieceType.BLACK) eval -= GetPointForPiece(Board.getSquares()[i, j]);
+                    else eval += GetPointForPiece(Board.getSquares()[i, j]);
+                }
+            }
+
+            return eval;
+        }
+
+        private int GetPointForPiece(Square piece)
+        {
+            switch(piece.Type)
+            {
+                case SquareContent.PAWN: return 1;
+                case SquareContent.BISHOP: return 2;
+                case SquareContent.KNIGHT: return 2;
+                case SquareContent.ROCK: return 3;
+                case SquareContent.QUEEN: return 4;
+            }
+
+            return 0;
+        }
+
+        private void AddComponents()
+        {
+            Controls.Remove(label1);
+            label1 = new Label();
+            label1.Width = BoardSize * buttonSize;
+            label1.BackColor = Color.Bisque;
+            label1.Location = new Point(chessButtons[0, 0].Location.X, chessButtons[0, 0].Location.Y - buttonSize);
+            if (Board != null) UpdateLabelPoints();
+
+            Controls.Add(label1);
+
+            Controls.Remove(label2);
+            label2 = new Label();
+            label2.Width = BoardSize * buttonSize;
+            label2.BackColor = Color.Bisque;
+            label2.Location = new Point(chessButtons[BoardSize - 1, 0].Location.X, chessButtons[BoardSize - 1, 0].Location.Y + (buttonSize + 30));
+            if (Board != null) UpdateLabelPoints();
+
+            Controls.Add(label2);
+        }
+
+        private void UpdateLabelPoints()
+        {
+            int BotPoints = 0;
+            int PlayerPoints = 0;
+
+            if (Evaluation() < 0) BotPoints = Math.Abs(Evaluation());
+            else PlayerPoints = Evaluation();
+
+            if(label1 != null) label1.Text = "Bot points: " + BotPoints.ToString();
+            if(label2 != null) label2.Text = "Player points: " + PlayerPoints.ToString();
         }
     }
 }
