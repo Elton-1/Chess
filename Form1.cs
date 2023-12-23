@@ -30,7 +30,6 @@ namespace Chess
         private Panel panel = null;
         private TrackBar difficultyBar = null;
         private Label difficultyLabel = null;
-        private bool resized = false;
 
         private bool engineThinking = false;
 
@@ -52,9 +51,7 @@ namespace Chess
         private void Form1_Resize(object sender, EventArgs e)
         {
             CenterChessboard();
-            if(!resized) AddComponents();
-
-            resized = true;
+            AddComponents(false);
         }
 
         private async Task Play()
@@ -69,6 +66,7 @@ namespace Chess
             AddComponents();
             Print(board);
             Board = board;
+            UpdateLabelPoints();
 
             if (PieceType == Boardlib.PieceType.BLACK)
             {
@@ -107,7 +105,7 @@ namespace Chess
             int boardTotalSize = buttonSize * BoardSize;
             
             this.MinimumSize = new Size(BoardSize * buttonSize + SystemInformation.FrameBorderSize.Width * 2,
-                                BoardSize * buttonSize + SystemInformation.FrameBorderSize.Height * 2);
+                                BoardSize * buttonSize + SystemInformation.FrameBorderSize.Height * 2 + 40);
             CenterToScreen();
             CenterChessboard();
 
@@ -374,7 +372,7 @@ namespace Chess
             return 0;
         }
 
-        private void AddComponents()
+        private void AddComponents(bool reset = true)
         {
             Controls.Remove(label1);
             label1 = new Label();
@@ -410,12 +408,16 @@ namespace Chess
 
             Controls.Remove(difficultyLabel);
             difficultyLabel = new Label();
+            difficultyLabel.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
             difficultyLabel.Width = difficultyBar.Width;
             difficultyLabel.Location = new Point(difficultyBar.Location.X, difficultyBar.Location.Y - 30);
             difficultyLabel.Text = "Difficulty: " + (difficultyBar.Value * 10);
 
             Controls.Add(difficultyLabel);
 
+            String temp = null;
+            if(panelPositionInfo != null && !reset) temp = panelPositionInfo.Text;
+           
             Controls.Remove(panel);
 
             panel = new Panel();
@@ -444,6 +446,8 @@ namespace Chess
             panelPositionInfo.Height = panel.Height / 2 + panel.Height / 5;
             panelPositionInfo.ReadOnly = true;
             panelPositionInfo.BackColor = Color.FromArgb(216, 212, 188);
+
+            if(temp != null) panelPositionInfo.Text = temp;
 
             panelPositionInfo.BorderStyle = BorderStyle.None;
             panelPositionInfo.Multiline = true;
@@ -489,6 +493,7 @@ namespace Chess
             {
                 ResetBtnStyle();
                 await Play();
+                UpdateLabelPoints();
             }
         }
 
