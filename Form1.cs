@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,6 +27,7 @@ namespace Chess
         private Label label2 = null;
         private TextBox panelPositionInfo = null;
         private Panel panel = null;
+        TrackBar difficultyBar = null;
 
         int buttonSize = 80;
 
@@ -97,7 +99,7 @@ namespace Chess
 
             ClientSize = new Size(formWidth, formHeight);
             this.MinimumSize = new Size(BoardSize * buttonSize + SystemInformation.FrameBorderSize.Width * 2,
-                                BoardSize * buttonSize + SystemInformation.FrameBorderSize.Height * 2 + 20 + 40);
+                                BoardSize * buttonSize + SystemInformation.FrameBorderSize.Height * 2);
             CenterToScreen();
             CenterChessboard();
 
@@ -155,11 +157,6 @@ namespace Chess
                 {
                     if (MoveFrom != null)
                     {
-                        /*var moves = Prev.ToArray();
-                        foreach ( var move in moves )
-                        {
-                            MessageBox.Show(move);
-                        }*/
                         bool moved = false;
                         Board.MovePiece(MoveFrom.Item1, MoveFrom.Item2, row, col, ref moved);
                         if(Board != null) UpdateLabelPoints();
@@ -230,7 +227,7 @@ namespace Chess
         {
             ChessEngine engine = new ChessEngine("Stockfish/Stockfish.exe");
 
-            string bestMove = await engine.GetBestMove(Board.GetFen(), 1);
+            String bestMove = await engine.GetBestMove(Board.GetFen(), difficultyBar.Value * 10);
             char[] letters = bestMove.ToCharArray();
             if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
             {
@@ -362,6 +359,20 @@ namespace Chess
 
             Controls.Add(label2);
 
+            difficultyBar = new TrackBar();
+            difficultyBar.Location = new Point(chessButtons[0, 0].Location.X - 450, chessButtons[0, 0].Location.Y);
+            difficultyBar.Width = 300;
+            difficultyBar.Minimum = 1;
+            difficultyBar.Maximum = 51;
+            difficultyBar.Value = 25;
+            Controls.Add(difficultyBar);
+
+            Label difficultyLabel = new Label();
+            difficultyLabel.Location = new Point(difficultyBar.Location.X, difficultyBar.Location.Y - 30);
+            difficultyLabel.Text = "Difficulty: ";
+
+            Controls.Add(difficultyLabel);
+
             Controls.Remove(panel);
 
             panel = new Panel();
@@ -426,6 +437,7 @@ namespace Chess
 
         private async void NewGameBtn_Click(object sender, EventArgs e)
         {
+            ResetBtnStyle();
             await Play();
         }
 
