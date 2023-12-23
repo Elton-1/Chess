@@ -24,7 +24,7 @@ namespace Chess
         private PieceType? PieceType = null;
         private Label label1 = null;
         private Label label2 = null;
-
+        private Label panelPositionInfo = null;
         private Panel panel = null;
 
         private Stack<String> Prev = new Stack<String>(); //For undo
@@ -151,7 +151,6 @@ namespace Chess
                     MoveFrom = new Tuple<int, int>(row, col);
 
                     //Highlight the validMoves
-
                     Square piece = Board.getSquares()[position.Item1, position.Item2];
                     HighlightValidMoves(Board, piece);
                 }
@@ -361,7 +360,7 @@ namespace Chess
             label2.ForeColor = Color.White;
             label2.Width = 120;
             label2.TextAlign = ContentAlignment.MiddleCenter;
-            label2.Location = new Point(chessButtons[BoardSize - 1, 0].Location.X, chessButtons[BoardSize - 1, 0].Location.Y + (buttonSize + 45));
+            label2.Location = new Point(chessButtons[BoardSize - 1, 0].Location.X, chessButtons[BoardSize - 1, 0].Location.Y + (buttonSize + 50));
             if (Board != null) UpdateLabelPoints();
 
             Controls.Add(label2);
@@ -369,13 +368,37 @@ namespace Chess
             Controls.Remove(panel);
 
             panel = new Panel();
-            panel.BackColor = Color.FromArgb(240, 238, 217);
+            panel.BackColor = Color.FromArgb(40, 155, 152, 137);
             panel.Width = 400;
             panel.Height = buttonSize * BoardSize;
             panel.BorderStyle = BorderStyle.FixedSingle;
             panel.Padding = new Padding(20, 20, 20, 20);
             panel.Location = new Point(chessButtons[0, 7].Location.X + 250, chessButtons[0, 7].Location.Y);
-            
+
+            Label panelPosition = new Label();
+            panelPosition.Text = "Position";
+            panelPosition.Width = panel.Width;
+            panelPosition.Height = 50;
+            panelPosition.TextAlign = ContentAlignment.MiddleCenter;
+            panelPosition.BackColor = Color.FromArgb(70, 69, 62);
+            panelPosition.ForeColor = Color.White;
+
+            panel.Controls.Add(panelPosition);
+
+            panelPositionInfo = new Label();
+            panelPositionInfo.Location = new Point(panelPosition.Location.X, panelPosition.Location.Y + panelPosition.Height + 20); //20 for padding
+            panelPositionInfo.Width = panel.Width;
+            panelPositionInfo.Height = panel.Height / 2 + panel.Height / 5;
+
+            panel.Controls.Add(panelPositionInfo);
+
+            Panel gameControls = new Panel();
+            gameControls.Location = new Point(panelPositionInfo.Location.X, panelPositionInfo.Location.Y + panelPositionInfo.Height + 20);
+            gameControls.Width = panel.Width;
+            gameControls.Height = 100;
+
+            panel.Controls.Add(gameControls);
+
             Controls.Add(panel);
         }
 
