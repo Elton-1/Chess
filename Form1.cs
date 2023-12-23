@@ -27,7 +27,9 @@ namespace Chess
         private Label label2 = null;
         private TextBox panelPositionInfo = null;
         private Panel panel = null;
-        TrackBar difficultyBar = null;
+        private TrackBar difficultyBar = null;
+        private Label difficultyLabel = null;
+        private bool resized = false;
 
         int buttonSize = 80;
 
@@ -43,7 +45,9 @@ namespace Chess
         private void Form1_Resize(object sender, EventArgs e)
         {
             CenterChessboard();
-            AddComponents();
+            if(!resized) AddComponents();
+
+            resized = true;
         }
 
         private async Task Play()
@@ -360,16 +364,18 @@ namespace Chess
             Controls.Add(label2);
 
             difficultyBar = new TrackBar();
-            difficultyBar.Location = new Point(chessButtons[0, 0].Location.X - 450, chessButtons[0, 0].Location.Y);
-            difficultyBar.Width = 300;
+            difficultyBar.Location = new Point(chessButtons[0, 0].Location.X - 550, chessButtons[0, 0].Location.Y);
+            difficultyBar.Width = 400;
             difficultyBar.Minimum = 1;
-            difficultyBar.Maximum = 51;
-            difficultyBar.Value = 25;
+            difficultyBar.Maximum = 100;
+            difficultyBar.Value = 50;
+            difficultyBar.ValueChanged += DifficultyBarValueChanged;
             Controls.Add(difficultyBar);
 
-            Label difficultyLabel = new Label();
+            difficultyLabel = new Label();
+            difficultyLabel.Width = difficultyBar.Width;
             difficultyLabel.Location = new Point(difficultyBar.Location.X, difficultyBar.Location.Y - 30);
-            difficultyLabel.Text = "Difficulty: ";
+            difficultyLabel.Text = "Difficulty: " + (difficultyBar.Value * 10);
 
             Controls.Add(difficultyLabel);
 
@@ -433,6 +439,11 @@ namespace Chess
             panel.Controls.Add(gameControls);
 
             Controls.Add(panel);
+        }
+
+        private void DifficultyBarValueChanged(object sender, EventArgs e)
+        {
+            difficultyLabel.Text = $"Difficulty: {difficultyBar.Value * 10}";
         }
 
         private async void NewGameBtn_Click(object sender, EventArgs e)
