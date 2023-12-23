@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,11 +32,17 @@ namespace Chess
         private Label difficultyLabel = null;
         private bool resized = false;
 
+        private bool engineThinking = false;
+
         int buttonSize = 80;
 
         public Form1()
         {
             InitializeComponent();
+
+            // Set the initial state to Maximized (full screen)
+            this.WindowState = FormWindowState.Maximized;
+
             InitializeChessboard();
             this.BackColor = Color.FromArgb(235, 236, 208);
             this.Resize += Form1_Resize;
@@ -98,10 +105,7 @@ namespace Chess
 
             // Calculate the total size of the chessboard and center it in the form
             int boardTotalSize = buttonSize * BoardSize;
-            int formWidth = boardTotalSize;
-            int formHeight = boardTotalSize;
-
-            ClientSize = new Size(formWidth, formHeight);
+            
             this.MinimumSize = new Size(BoardSize * buttonSize + SystemInformation.FrameBorderSize.Width * 2,
                                 BoardSize * buttonSize + SystemInformation.FrameBorderSize.Height * 2);
             CenterToScreen();
@@ -174,6 +178,8 @@ namespace Chess
                             {
                                 Print(Board);
                                 MessageBox.Show("You Won!");
+                                DialogResult result = MessageBox.Show("Do you want to save the game position have played?", "Save Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                if (result == DialogResult.Yes) SaveGame();
                                 await Play();
                                 return;
                             }
@@ -181,6 +187,8 @@ namespace Chess
                             {
                                 Print(Board);
                                 MessageBox.Show("Draw!");
+                                DialogResult result = MessageBox.Show("Do you want to save the game position have played?", "Save Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                if (result == DialogResult.Yes) SaveGame();
                                 await Play();
                                 return;
                             }
@@ -193,6 +201,8 @@ namespace Chess
                         {
                             Print(Board);
                             MessageBox.Show("Draw!");
+                            DialogResult result = MessageBox.Show("Do you want to save the game position have played?", "Save Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (result == DialogResult.Yes) SaveGame();
                             await Play();
                             return;
                         }
@@ -200,6 +210,8 @@ namespace Chess
                         {
                             Print(Board);
                             MessageBox.Show("You Lost!");
+                            DialogResult result = MessageBox.Show("Do you want to save the game position have played?", "Save Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (result == DialogResult.Yes) SaveGame();
                             await Play();
                             return;
                         }
@@ -227,10 +239,32 @@ namespace Chess
             }
         }
 
+        private static int count = 1;
+        private void SaveGame()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Title = "Select a Text File";
+            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            saveFileDialog.FileName = $"ChessGameResults{count}.txt";
+
+            if (saveFileDialog.ShowDialog() != DialogResult.OK) MessageBox.Show("Operation Terminated");
+            else
+            {
+                using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName))
+                {
+                    sw.Write(panelPositionInfo.Text);
+                }
+
+                count++;
+            }
+        }
+
         private async Task PlayEngine()
         {
             ChessEngine engine = new ChessEngine("Stockfish/Stockfish.exe");
 
+            engineThinking = true;
             String bestMove = await engine.GetBestMove(Board.GetFen(), difficultyBar.Value * 10);
             char[] letters = bestMove.ToCharArray();
             if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
@@ -243,6 +277,7 @@ namespace Chess
                 Board.MoveOpponent(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y);
                 AddMoveToInfo(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y);
             }
+            engineThinking = false;
         }
 
         private void InitalizeSquare(Square square, Button btn)
@@ -450,8 +485,11 @@ namespace Chess
 
         private async void NewGameBtn_Click(object sender, EventArgs e)
         {
-            ResetBtnStyle();
-            await Play();
+            if (!engineThinking)
+            {
+                ResetBtnStyle();
+                await Play();
+            }
         }
 
         private void UpdateLabelPoints()
