@@ -196,6 +196,8 @@ namespace Boardlib
         {
             WhitesTurn = !WhitesTurn;
 
+            if (row1 == row2 && col1 == col2) return;
+
             int initalKingCol = 4;
             int movingRightRock = 5;
             int movingLeftRock = 3;

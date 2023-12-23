@@ -24,11 +24,8 @@ namespace Chess
         private PieceType? PieceType = null;
         private Label label1 = null;
         private Label label2 = null;
-        private Label panelPositionInfo = null;
+        private TextBox panelPositionInfo = null;
         private Panel panel = null;
-
-        private Stack<String> Prev = new Stack<String>(); //For undo
-        private Stack<String> Next = new Stack<String>(); //For redo
 
         int buttonSize = 80;
 
@@ -171,7 +168,7 @@ namespace Chess
                         if (!moved) first = true;
                         else
                         {
-                            PushToPrev(MoveFrom.Item1, MoveFrom.Item2, row, col);
+                            AddMoveToInfo(MoveFrom.Item1, MoveFrom.Item2, row, col);
                             if (Board.Won())
                             {
                                 Print(Board);
@@ -238,12 +235,12 @@ namespace Chess
             if (Board.PlayerPieceType == Boardlib.PieceType.WHITE)
             {
                 Board.MoveOpponent(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y);
-                PushToPrev(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y);
+                AddMoveToInfo(Board.ConvertRowAndCol(letters[1], letters[0]).X, Board.ConvertRowAndCol(letters[1], letters[0]).Y, Board.ConvertRowAndCol(letters[3], letters[2]).X, Board.ConvertRowAndCol(letters[3], letters[2]).Y);
             }
             else
             {
                 Board.MoveOpponent(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y);
-                PushToPrev(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y);
+                AddMoveToInfo(Board.ConvertRowAndColBlack(letters[1], letters[0]).X, Board.ConvertRowAndColBlack(letters[1], letters[0]).Y, Board.ConvertRowAndColBlack(letters[3], letters[2]).X, Board.ConvertRowAndColBlack(letters[3], letters[2]).Y);
             }
         }
 
@@ -385,10 +382,18 @@ namespace Chess
 
             panel.Controls.Add(panelPosition);
 
-            panelPositionInfo = new Label();
+            panelPositionInfo = new TextBox();
             panelPositionInfo.Location = new Point(panelPosition.Location.X, panelPosition.Location.Y + panelPosition.Height + 20); //20 for padding
             panelPositionInfo.Width = panel.Width;
+            panelPositionInfo.Padding = new Padding(10, 10, 10, 10);
+            panelPositionInfo.Font = new Font("Segoe UI", 8f, FontStyle.Bold);
             panelPositionInfo.Height = panel.Height / 2 + panel.Height / 5;
+            panelPositionInfo.ReadOnly = true;
+            panelPositionInfo.BackColor = Color.FromArgb(216, 212, 188);
+
+            panelPositionInfo.BorderStyle = BorderStyle.None;
+            panelPositionInfo.Multiline = true;
+            panelPositionInfo.ScrollBars = ScrollBars.Vertical;
 
             panel.Controls.Add(panelPositionInfo);
 
@@ -396,10 +401,32 @@ namespace Chess
             gameControls.Location = new Point(panelPositionInfo.Location.X, panelPositionInfo.Location.Y + panelPositionInfo.Height + 20);
             gameControls.Width = panel.Width;
             gameControls.Height = 100;
+            gameControls.BackColor = Color.FromArgb(216, 212, 188);
+
+            Button newGameBtn = new Button();
+            newGameBtn.Location = new Point(gameControls.Width / 4, gameControls.Height / 4);
+            newGameBtn.Text = "New Game";
+            newGameBtn.BackColor = Color.FromArgb(119, 149, 86);
+            newGameBtn.ForeColor = Color.White;
+            newGameBtn.Width = gameControls.Width / 2;
+            newGameBtn.Height = gameControls.Height / 2;
+            newGameBtn.Font = new Font(newGameBtn.Font, FontStyle.Bold);
+            newGameBtn.Padding = new Padding(10, 10, 10, 10);
+            newGameBtn.FlatStyle = FlatStyle.Flat;
+            newGameBtn.FlatAppearance.BorderSize = 0;
+            newGameBtn.Cursor = Cursors.Hand;
+            newGameBtn.Click += NewGameBtn_Click;
+
+            gameControls.Controls.Add(newGameBtn);
 
             panel.Controls.Add(gameControls);
 
             Controls.Add(panel);
+        }
+
+        private async void NewGameBtn_Click(object sender, EventArgs e)
+        {
+            await Play();
         }
 
         private void UpdateLabelPoints()
@@ -414,12 +441,12 @@ namespace Chess
             if(label2 != null) label2.Text = "Player points: " + PlayerPoints;
         }
 
-        private void PushToPrev(int row1, int col1, int row2, int col2)
+        private void AddMoveToInfo(int row1, int col1, int row2, int col2)
         {
             if (PieceType == Boardlib.PieceType.BLACK)
-                Prev.Push(Board.ConvertIntRowColToStrBlack(row1, col1) + Board.ConvertIntRowColToStrBlack(row2, col2));
+                panelPositionInfo.Text += Board.ConvertIntRowColToStrBlack(row1, col1) + " " +  Board.ConvertIntRowColToStrBlack(row2, col2) + ", ";
             else
-                Prev.Push(Board.convertIntRowColToStrWhite(row1, col1) + Board.convertIntRowColToStrWhite(row2, col2));
+                panelPositionInfo.Text += Board.convertIntRowColToStrWhite(row1, col1) + " " + Board.convertIntRowColToStrWhite(row2, col2) + ", ";
         }
     }
 }
