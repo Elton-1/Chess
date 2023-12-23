@@ -363,6 +363,7 @@ namespace Chess
 
             Controls.Add(label2);
 
+            Controls.Remove(difficultyBar);
             difficultyBar = new TrackBar();
             difficultyBar.Location = new Point(chessButtons[0, 0].Location.X - 550, chessButtons[0, 0].Location.Y);
             difficultyBar.Width = 400;
@@ -372,6 +373,7 @@ namespace Chess
             difficultyBar.ValueChanged += DifficultyBarValueChanged;
             Controls.Add(difficultyBar);
 
+            Controls.Remove(difficultyLabel);
             difficultyLabel = new Label();
             difficultyLabel.Width = difficultyBar.Width;
             difficultyLabel.Location = new Point(difficultyBar.Location.X, difficultyBar.Location.Y - 30);
