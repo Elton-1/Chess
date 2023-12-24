@@ -20,7 +20,7 @@ To get started with the Chess Application, follow these simple steps:
 
 1. **Clone the Repository:** Clone this repository to your local machine using the following command:
    ```bash
-   git clone https://github.com/your-username/chess-application.git
+   git clone https://github.com/Elton-1/Chess.git
 2. **Build** Make sure you have downloaded .Net
    ```bash
    dotnet build
