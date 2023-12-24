@@ -34,3 +34,7 @@ To install the Chess Application, follow these simple steps:
 
 This software uses the [GPL v3 Licence](https://github.com/Elton-1/Chess/blob/main/LICENSE)
 
+## For Contributers
+
+If you do want to change this code and modify it then you can clone the repo but you have to make sure you provide the Stockfish.exe in the binaries. (My code uses the stockfish chess engine).
+
