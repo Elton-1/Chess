@@ -16,17 +16,14 @@ Explore Stockfish on [GitHub](https://github.com/official-stockfish/Stockfish)
 
 ## Getting Started
 
-To get started with the Chess Application, follow these simple steps:
+To install the Chess Application, follow these simple steps:
 
-1. **Clone the Repository:** Clone this repository to your local machine using the following command:
-   ```bash
-   git clone https://github.com/Elton-1/Chess.git
-2. **Build** Make sure you have downloaded .Net
-   ```bash
-   dotnet build
-3. **Run**
-    ```bash 
-    dotnet run
+1. Go to [link](https://www.dropbox.com/scl/fi/ia2w22mh010y6wq6gzx00/Chess.zip?rlkey=p25bhbsdqcr1h17g42p29o39i&dl=0)
+2. Install the zip.
+3. Make sure you have an compression software (like 7-zip and winrar)
+4. After installing decompress the zip
+5. Run the setup
+6. Next...Next..Finish..
 
 ## Licence
 
