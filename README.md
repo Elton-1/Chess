@@ -30,5 +30,5 @@ To get started with the Chess Application, follow these simple steps:
 
 ## Licence
 
-This software uses the [GPL v3 Licence](https://www.gnu.org/licenses/gpl-3.0.en.html)
+This software uses the [GPL v3 Licence](https://github.com/Elton-1/Chess/tree/main?tab=GPL-3.0-1-ov-file)
 
