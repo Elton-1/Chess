@@ -58,7 +58,6 @@ namespace Boardlib
                 {
                     foreach (var moves in opponentValidMoves.validMoves)
                     {
-                        //if that squares is ocyopyed
                         if (moves.Item2 == initalKingRow && moves.Item3 == i)
                         {
                             return false;
