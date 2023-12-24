@@ -24,6 +24,7 @@ To get started with the Chess Application, follow these simple steps:
 2. **Build** Make sure you have downloaded .Net
    ```bash
    dotnet build
-3. **Run** 
+3. **Run**
+    ```bash 
     dotnet run
 
