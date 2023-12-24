@@ -28,3 +28,7 @@ To get started with the Chess Application, follow these simple steps:
     ```bash 
     dotnet run
 
+## Licence
+
+This software uses the [GPL v3 Licence](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
