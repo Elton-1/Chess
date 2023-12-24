@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 using Boardlib;
 
 namespace Chess
@@ -21,8 +22,10 @@ namespace Chess
         private Button[,] chessButtons;
         private Board Board = null;
         private Tuple<int, int> MoveFrom = null;
-        private Color DarkSquareViewed = Color.FromArgb(205, 206, 178);
-        private Color WhiteSquareViewed = Color.FromArgb(89, 119, 56);
+
+        public Color WhiteSquares = Color.FromArgb(235, 236, 208);
+        public Color DarkSquares = Color.FromArgb(109, 139, 70);
+
         private PieceType? PieceType = null;
         private Label label1 = null;
         private Label label2 = null;
@@ -43,7 +46,7 @@ namespace Chess
             this.WindowState = FormWindowState.Maximized;
 
             InitializeChessboard();
-            this.BackColor = Color.FromArgb(235, 236, 208);
+            this.BackColor = WhiteSquares;
             this.Resize += Form1_Resize;
             _ = Play();
         }
@@ -89,8 +92,8 @@ namespace Chess
                         Height = buttonSize,
                         Location = new Point(col * buttonSize, row * buttonSize),
                         Tag = new Tuple<int, int>(row, col), // Store row and col in Tag for later use
-                        BackColor = (row + col) % 2 == 0 ? Color.FromArgb(235, 236, 208) : Color.FromArgb(119, 149, 86),
-                        ForeColor = (row + col) % 2 == 0 ? Color.FromArgb(235, 236, 208) : Color.FromArgb(119, 149, 86),
+                        BackColor = (row + col) % 2 == 0 ? WhiteSquares : DarkSquares,
+                        ForeColor = (row + col) % 2 == 0 ? WhiteSquares : DarkSquares,
                         FlatStyle = FlatStyle.Flat
                     };
 
@@ -226,7 +229,7 @@ namespace Chess
         {
             foreach (Control control in Controls)
             {
-                if (control is Button button)
+                if (control is Button button && button.Text == String.Empty)
                 {
                     button.BackgroundImage = null;
                     Tuple<int, int> position = (Tuple<int, int>)button.Tag;
@@ -314,15 +317,14 @@ namespace Chess
                         {
                             var color = button.BackColor;
 
-                            if (color != DarkSquareViewed && color != WhiteSquareViewed)
+                            if (color != GetViewedColor(DarkSquares, 30) && color != GetViewedColor(DarkSquares, 30))
                             {
-                                button.BackColor = Color.FromArgb(color.R - 30, color.G - 30, color.B - 30);
+                                button.BackColor = GetViewedColor(color, 30);
                             }
                             else
                             {
                                 //Reset
-                                button.BackColor = Color.FromArgb(color.R + 30, color.G + 30, color.B + 30);
-
+                                button.BackColor = GetPrevColor(color, 30);
                             }
                         }
                     }
@@ -330,15 +332,28 @@ namespace Chess
             }
         }
 
+        private Color GetPrevColor(Color clr, int tone)
+        {
+            Color depest = clr;
+            for(int i = 0; i <= tone; i++)
+            {
+                if (clr.R + i > 255 || clr.G + i > 255 || clr.B + i > 255) break;
+
+                depest = Color.FromArgb(clr.R + i, clr.G + i, clr.B + i);
+            }
+
+            return depest;
+        }
+
         private void ResetBtnStyle()
         {
             foreach (Control control in Controls)
             {
-                if (control is Button button)
+                if (control is Button button && button.Text == String.Empty)
                 {
                     Tuple<int, int> position = (Tuple<int, int>)button.Tag;
-                    button.BackColor = (position.Item1 + position.Item2) % 2 == 0 ? Color.FromArgb(235, 236, 208) : Color.FromArgb(119, 149, 86);
-                    button.ForeColor = (position.Item1 + position.Item2) % 2 == 0 ? Color.FromArgb(235, 236, 208) : Color.FromArgb(119, 149, 86);
+                    button.BackColor = (position.Item1 + position.Item2) % 2 == 0 ? WhiteSquares : DarkSquares;
+                    button.ForeColor = (position.Item1 + position.Item2) % 2 == 0 ? WhiteSquares : DarkSquares;
                 }
             }
         }
@@ -377,7 +392,7 @@ namespace Chess
             Controls.Remove(label1);
             label1 = new Label();
             label1.ForeColor = Color.White;
-            label1.BackColor = Color.FromArgb(119, 149, 86);
+            label1.BackColor = Color.FromArgb(109, 139, 70);
             label1.Width = 120;
             label1.TextAlign = ContentAlignment.MiddleCenter;
             label1.Location = new Point(chessButtons[0, 0].Location.X, chessButtons[0, 0].Location.Y - buttonSize);
@@ -387,7 +402,7 @@ namespace Chess
 
             Controls.Remove(label2);
             label2 = new Label();
-            label2.BackColor = Color.FromArgb(119, 149, 86);
+            label2.BackColor = Color.FromArgb(109, 139, 70);
             label2.ForeColor = Color.White;
             label2.Width = 120;
             label2.TextAlign = ContentAlignment.MiddleCenter;
@@ -403,17 +418,32 @@ namespace Chess
             difficultyBar.Minimum = 1;
             difficultyBar.Maximum = 100;
             difficultyBar.Value = 50;
+            difficultyBar.BackColor = Color.FromArgb(70, 69, 62);
             difficultyBar.ValueChanged += DifficultyBarValueChanged;
             Controls.Add(difficultyBar);
 
             Controls.Remove(difficultyLabel);
             difficultyLabel = new Label();
-            difficultyLabel.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
+            difficultyLabel.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
             difficultyLabel.Width = difficultyBar.Width;
-            difficultyLabel.Location = new Point(difficultyBar.Location.X, difficultyBar.Location.Y - 30);
+            difficultyLabel.Height = 40;
+            difficultyLabel.Padding = new Padding(0, 10, 0, 0);
+            difficultyLabel.BackColor = Color.FromArgb(70, 69, 62);
+            difficultyLabel.ForeColor = Color.White;
+            difficultyLabel.TextAlign = ContentAlignment.MiddleCenter;
+            difficultyLabel.Location = new Point(difficultyBar.Location.X, difficultyBar.Location.Y - 40);
             difficultyLabel.Text = "Difficulty: " + (difficultyBar.Value * 10);
 
             Controls.Add(difficultyLabel);
+
+            //Adding left border
+            Panel borderLeft = new Panel();
+            borderLeft.Location = new Point(difficultyLabel.Location.X - 7, difficultyLabel.Location.Y);
+            borderLeft.Height = difficultyLabel.Height + difficultyBar.Height;
+            borderLeft.Width = 7;
+            borderLeft.BackColor = Color.FromArgb(109, 139, 70);
+
+            Controls.Add(borderLeft);
 
             String temp = null;
             if(panelPositionInfo != null && !reset) temp = panelPositionInfo.Text;
@@ -464,11 +494,11 @@ namespace Chess
             Button newGameBtn = new Button();
             newGameBtn.Location = new Point(gameControls.Width / 4, gameControls.Height / 4);
             newGameBtn.Text = "New Game";
-            newGameBtn.BackColor = Color.FromArgb(119, 149, 86);
+            newGameBtn.BackColor = Color.FromArgb(109, 139, 70);
             newGameBtn.ForeColor = Color.White;
             newGameBtn.Width = gameControls.Width / 2;
             newGameBtn.Height = gameControls.Height / 2;
-            newGameBtn.Font = new Font(newGameBtn.Font, FontStyle.Bold);
+            newGameBtn.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
             newGameBtn.Padding = new Padding(10, 10, 10, 10);
             newGameBtn.FlatStyle = FlatStyle.Flat;
             newGameBtn.FlatAppearance.BorderSize = 0;
@@ -479,7 +509,62 @@ namespace Chess
 
             panel.Controls.Add(gameControls);
 
+            Panel ThemeBtn = new Panel();
+            ThemeBtn.Location = new Point(difficultyBar.Location.X - 70, difficultyBar.Location.Y + 750);
+            ThemeBtn.Width = 50;
+            ThemeBtn.Height = 50;
+            Image originalImage = Image.FromFile("Images/Theme.png");
+            Bitmap resizedImage = new Bitmap(originalImage, 50, 50);
+            ThemeBtn.BackgroundImage = resizedImage;
+            ThemeBtn.Cursor = Cursors.Hand;
+            ThemeBtn.Click += ThemeBtn_Click;
+            ThemeBtn.Tag = null;
+
+            Controls.Add(ThemeBtn);
+
             Controls.Add(panel);
+        }
+
+        private void ThemeBtn_Click(object sender, EventArgs e)
+        {
+            LoadThemePicker();
+            ChangeBoardTheme();
+        }
+
+        private void ChangeBoardTheme()
+        {
+            ResetBtnStyle();
+            AddComponents(false);
+            Print(Board);
+        }
+
+        private void LoadThemePicker()
+        {
+            using (ThemePicker themePicker = new ThemePicker(DarkSquares, WhiteSquares))
+            {
+                // Show the form as a modal dialog
+                DialogResult result = themePicker.ShowDialog();
+
+                // Check if the user clicked OK or if the form was closed
+                if (result == DialogResult.OK || result == DialogResult.Cancel)
+                {
+                    DarkSquares = themePicker.DarkSquares;
+                    WhiteSquares = themePicker.WhiteSquares;
+                }
+            }
+        }
+
+        private Color GetViewedColor(Color clr, int darkTone)
+        {
+            Color depestColor = clr;
+            for (int i = 0; i <= darkTone; i++)
+            {
+                if (clr.R - i < 0 || clr.G - i < 0 || clr.B - i < 0) break;
+
+                depestColor = Color.FromArgb(clr.R - i, clr.G - i, clr.B - i);
+            }
+
+            return depestColor;
         }
 
         private void DifficultyBarValueChanged(object sender, EventArgs e)
