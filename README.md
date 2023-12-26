@@ -31,6 +31,8 @@ To install the Chess Application, follow these simple steps:
 5. Run the setup
 6. Next...Next..Finish..
 
+NOTE: the program was programmed and only tested on an 1920 x 1080 resolution. it might not work with other resolutions as expected.
+
 ## Licence
 
 This software uses the [GPL v3 Licence](https://github.com/Elton-1/Chess/blob/main/LICENSE)
