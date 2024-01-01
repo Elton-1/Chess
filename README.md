@@ -1,5 +1,8 @@
 
-# Chess Application
+## <p align="center"> Chess Application </p>
+<a align="center" href="https://opensource.org/licenses/GPL-3.0">
+  <img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="GPLv3">
+</a>
 
 Welcome to the Chess Application, a chess interface built using Windows Forms. This application provides a seamless experience for playing chess against a highly capable bot with adjustable difficulty levels.
 
@@ -35,7 +38,7 @@ NOTE: the program was programmed and only tested on an 1920 x 1080 resolution. i
 
 ## Licence
 
-This software uses the [GPL v3 Licence](https://github.com/Elton-1/Chess/blob/main/LICENSE)
+This software uses the 
 
 ## For Contributers
 
