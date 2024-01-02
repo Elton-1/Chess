@@ -27,7 +27,7 @@ Explore Stockfish on [GitHub](https://github.com/official-stockfish/Stockfish)
 This application only works on 64bit computers (because it uses stockfish for 64bit computers).
 To install the Chess Application, follow these simple steps:
 
-1. Go to [link](https://www.dropbox.com/scl/fi/ia2w22mh010y6wq6gzx00/Chess.zip?rlkey=p25bhbsdqcr1h17g42p29o39i&dl=0)
+1. Go to [link](https://www.dropbox.com/scl/fi/27sc35dmw1ptu6w9951ie/Chess.zip?rlkey=w2692vurhbgab6gqffwsjj914&dl=0)
 2. Install the zip.
 3. Make sure you have an compression software (like 7-zip and winrar)
 4. After installing decompress the zip
