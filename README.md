@@ -38,7 +38,7 @@ NOTE: the program was programmed and only tested on an 1920 x 1080 resolution. i
 
 ## Licence
 
-This software uses the 
+This software uses the GPLv3 Licence
 
 ## For Contributers
 
