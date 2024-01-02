@@ -28,188 +28,196 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.WhiteSquaresPicker = new System.Windows.Forms.Panel();
-            this.DarkSquaresPicker = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.BlueTheme = new System.Windows.Forms.Button();
-            this.BrownTheme = new System.Windows.Forms.Button();
-            this.GreenTheme = new System.Windows.Forms.Button();
-            this.GrayTheme = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.ApplyBtn = new System.Windows.Forms.Button();
-            this.CancelBtn = new System.Windows.Forms.Button();
-            this.SuspendLayout();
+            label1 = new Label();
+            label2 = new Label();
+            WhiteSquaresPicker = new Panel();
+            DarkSquaresPicker = new Panel();
+            label3 = new Label();
+            BlueTheme = new Button();
+            BrownTheme = new Button();
+            GreenTheme = new Button();
+            GrayTheme = new Button();
+            label7 = new Label();
+            label8 = new Label();
+            ApplyBtn = new Button();
+            CancelBtn = new Button();
+            SuspendLayout();
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Arial", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(30, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(309, 33);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Theme Customization";
+            label1.AutoSize = true;
+            label1.Font = new Font("Arial", 16.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 0);
+            label1.Location = new Point(30, 32);
+            label1.Name = "label1";
+            label1.Size = new Size(309, 33);
+            label1.TabIndex = 2;
+            label1.Text = "Theme Customization";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(43, 79);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(81, 19);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Custom: ";
+            label2.AutoSize = true;
+            label2.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(43, 99);
+            label2.Name = "label2";
+            label2.Size = new Size(81, 19);
+            label2.TabIndex = 3;
+            label2.Text = "Custom: ";
             // 
             // WhiteSquaresPicker
             // 
-            this.WhiteSquaresPicker.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.WhiteSquaresPicker.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.WhiteSquaresPicker.Location = new System.Drawing.Point(194, 120);
-            this.WhiteSquaresPicker.Name = "WhiteSquaresPicker";
-            this.WhiteSquaresPicker.Size = new System.Drawing.Size(45, 45);
-            this.WhiteSquaresPicker.TabIndex = 4;
+            WhiteSquaresPicker.BorderStyle = BorderStyle.FixedSingle;
+            WhiteSquaresPicker.Cursor = Cursors.Hand;
+            WhiteSquaresPicker.Location = new Point(194, 150);
+            WhiteSquaresPicker.Margin = new Padding(3, 4, 3, 4);
+            WhiteSquaresPicker.Name = "WhiteSquaresPicker";
+            WhiteSquaresPicker.Size = new Size(60, 56);
+            WhiteSquaresPicker.TabIndex = 4;
             // 
             // DarkSquaresPicker
             // 
-            this.DarkSquaresPicker.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DarkSquaresPicker.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DarkSquaresPicker.Location = new System.Drawing.Point(396, 120);
-            this.DarkSquaresPicker.Name = "DarkSquaresPicker";
-            this.DarkSquaresPicker.Size = new System.Drawing.Size(45, 45);
-            this.DarkSquaresPicker.TabIndex = 5;
+            DarkSquaresPicker.BorderStyle = BorderStyle.FixedSingle;
+            DarkSquaresPicker.Cursor = Cursors.Hand;
+            DarkSquaresPicker.Location = new Point(396, 150);
+            DarkSquaresPicker.Margin = new Padding(3, 4, 3, 4);
+            DarkSquaresPicker.Name = "DarkSquaresPicker";
+            DarkSquaresPicker.Size = new Size(58, 56);
+            DarkSquaresPicker.TabIndex = 5;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.label3.Location = new System.Drawing.Point(43, 189);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(136, 19);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Known Themes:";
+            label3.AutoSize = true;
+            label3.Font = new Font("Arial", 10.2F, FontStyle.Bold);
+            label3.Location = new Point(43, 236);
+            label3.Name = "label3";
+            label3.Size = new Size(136, 19);
+            label3.TabIndex = 6;
+            label3.Text = "Known Themes:";
             // 
             // BlueTheme
             // 
-            this.BlueTheme.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BlueTheme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BlueTheme.Location = new System.Drawing.Point(59, 391);
-            this.BlueTheme.Name = "BlueTheme";
-            this.BlueTheme.Size = new System.Drawing.Size(195, 45);
-            this.BlueTheme.TabIndex = 7;
-            this.BlueTheme.Text = "Blue";
-            this.BlueTheme.UseVisualStyleBackColor = true;
-            this.BlueTheme.Click += new System.EventHandler(this.BlueTheme_Click);
+            BlueTheme.Cursor = Cursors.Hand;
+            BlueTheme.FlatStyle = FlatStyle.Flat;
+            BlueTheme.Location = new Point(59, 489);
+            BlueTheme.Margin = new Padding(3, 4, 3, 4);
+            BlueTheme.Name = "BlueTheme";
+            BlueTheme.Size = new Size(195, 56);
+            BlueTheme.TabIndex = 7;
+            BlueTheme.Text = "Blue";
+            BlueTheme.UseVisualStyleBackColor = true;
+            BlueTheme.Click += BlueTheme_Click;
             // 
             // BrownTheme
             // 
-            this.BrownTheme.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BrownTheme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrownTheme.Location = new System.Drawing.Point(59, 312);
-            this.BrownTheme.Name = "BrownTheme";
-            this.BrownTheme.Size = new System.Drawing.Size(195, 45);
-            this.BrownTheme.TabIndex = 8;
-            this.BrownTheme.Text = "Brown";
-            this.BrownTheme.UseVisualStyleBackColor = true;
-            this.BrownTheme.Click += new System.EventHandler(this.BrownTheme_Click);
+            BrownTheme.Cursor = Cursors.Hand;
+            BrownTheme.FlatStyle = FlatStyle.Flat;
+            BrownTheme.Location = new Point(59, 390);
+            BrownTheme.Margin = new Padding(3, 4, 3, 4);
+            BrownTheme.Name = "BrownTheme";
+            BrownTheme.Size = new Size(195, 56);
+            BrownTheme.TabIndex = 8;
+            BrownTheme.Text = "Brown";
+            BrownTheme.UseVisualStyleBackColor = true;
+            BrownTheme.Click += BrownTheme_Click;
             // 
             // GreenTheme
             // 
-            this.GreenTheme.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GreenTheme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GreenTheme.Location = new System.Drawing.Point(59, 238);
-            this.GreenTheme.Name = "GreenTheme";
-            this.GreenTheme.Size = new System.Drawing.Size(195, 45);
-            this.GreenTheme.TabIndex = 9;
-            this.GreenTheme.Text = "Default";
-            this.GreenTheme.UseVisualStyleBackColor = true;
-            this.GreenTheme.Click += new System.EventHandler(this.GreenTheme_Click);
+            GreenTheme.Cursor = Cursors.Hand;
+            GreenTheme.FlatStyle = FlatStyle.Flat;
+            GreenTheme.Location = new Point(59, 298);
+            GreenTheme.Margin = new Padding(3, 4, 3, 4);
+            GreenTheme.Name = "GreenTheme";
+            GreenTheme.Size = new Size(195, 56);
+            GreenTheme.TabIndex = 9;
+            GreenTheme.Text = "Default";
+            GreenTheme.UseVisualStyleBackColor = true;
+            GreenTheme.Click += GreenTheme_Click;
             // 
             // GrayTheme
             // 
-            this.GrayTheme.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GrayTheme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GrayTheme.Location = new System.Drawing.Point(59, 469);
-            this.GrayTheme.Name = "GrayTheme";
-            this.GrayTheme.Size = new System.Drawing.Size(195, 45);
-            this.GrayTheme.TabIndex = 10;
-            this.GrayTheme.Text = "Gray";
-            this.GrayTheme.UseVisualStyleBackColor = true;
-            this.GrayTheme.Click += new System.EventHandler(this.GrayTheme_Click);
+            GrayTheme.Cursor = Cursors.Hand;
+            GrayTheme.FlatStyle = FlatStyle.Flat;
+            GrayTheme.Location = new Point(59, 586);
+            GrayTheme.Margin = new Padding(3, 4, 3, 4);
+            GrayTheme.Name = "GrayTheme";
+            GrayTheme.Size = new Size(195, 56);
+            GrayTheme.TabIndex = 10;
+            GrayTheme.Text = "Gray";
+            GrayTheme.UseVisualStyleBackColor = true;
+            GrayTheme.Click += GrayTheme_Click;
             // 
             // label7
             // 
-            this.label7.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(68, 120);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(120, 45);
-            this.label7.TabIndex = 16;
-            this.label7.Text = "White Squares";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label7.Font = new Font("Arial", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label7.Location = new Point(68, 150);
+            label7.Name = "label7";
+            label7.Size = new Size(120, 56);
+            label7.TabIndex = 16;
+            label7.Text = "White Squares";
+            label7.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label8
             // 
-            this.label8.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(265, 120);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(125, 45);
-            this.label8.TabIndex = 17;
-            this.label8.Text = "Dark Squares";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label8.Font = new Font("Arial", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label8.Location = new Point(265, 150);
+            label8.Name = "label8";
+            label8.Size = new Size(125, 56);
+            label8.TabIndex = 17;
+            label8.Text = "Dark Squares";
+            label8.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ApplyBtn
             // 
-            this.ApplyBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ApplyBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ApplyBtn.Location = new System.Drawing.Point(555, 593);
-            this.ApplyBtn.Name = "ApplyBtn";
-            this.ApplyBtn.Size = new System.Drawing.Size(75, 34);
-            this.ApplyBtn.TabIndex = 18;
-            this.ApplyBtn.Text = "Apply";
-            this.ApplyBtn.UseVisualStyleBackColor = true;
-            this.ApplyBtn.Click += new System.EventHandler(this.ApplyBtn_Click);
+            ApplyBtn.Cursor = Cursors.Hand;
+            ApplyBtn.FlatStyle = FlatStyle.Flat;
+            ApplyBtn.Location = new Point(555, 741);
+            ApplyBtn.Margin = new Padding(3, 4, 3, 4);
+            ApplyBtn.Name = "ApplyBtn";
+            ApplyBtn.Size = new Size(75, 42);
+            ApplyBtn.TabIndex = 18;
+            ApplyBtn.Text = "Apply";
+            ApplyBtn.UseVisualStyleBackColor = true;
+            ApplyBtn.Click += ApplyBtn_Click;
             // 
             // CancelBtn
             // 
-            this.CancelBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.CancelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelBtn.Location = new System.Drawing.Point(654, 593);
-            this.CancelBtn.Name = "CancelBtn";
-            this.CancelBtn.Size = new System.Drawing.Size(75, 34);
-            this.CancelBtn.TabIndex = 19;
-            this.CancelBtn.Text = "Cancel";
-            this.CancelBtn.UseVisualStyleBackColor = true;
-            this.CancelBtn.Click += new System.EventHandler(this.CancelBtn_Click);
+            CancelBtn.Cursor = Cursors.Hand;
+            CancelBtn.FlatStyle = FlatStyle.Flat;
+            CancelBtn.Location = new Point(654, 741);
+            CancelBtn.Margin = new Padding(3, 4, 3, 4);
+            CancelBtn.Name = "CancelBtn";
+            CancelBtn.Size = new Size(75, 42);
+            CancelBtn.TabIndex = 19;
+            CancelBtn.Text = "Cancel";
+            CancelBtn.UseVisualStyleBackColor = true;
+            CancelBtn.Click += CancelBtn_Click;
             // 
             // ThemePicker
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ClientSize = new System.Drawing.Size(782, 653);
-            this.Controls.Add(this.CancelBtn);
-            this.Controls.Add(this.ApplyBtn);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.GrayTheme);
-            this.Controls.Add(this.GreenTheme);
-            this.Controls.Add(this.BrownTheme);
-            this.Controls.Add(this.BlueTheme);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.DarkSquaresPicker);
-            this.Controls.Add(this.WhiteSquaresPicker);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.MaximumSize = new System.Drawing.Size(800, 700);
-            this.MinimumSize = new System.Drawing.Size(800, 700);
-            this.Name = "ThemePicker";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Theme Customization";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ButtonFace;
+            ClientSize = new Size(782, 816);
+            Controls.Add(CancelBtn);
+            Controls.Add(ApplyBtn);
+            Controls.Add(label8);
+            Controls.Add(label7);
+            Controls.Add(GrayTheme);
+            Controls.Add(GreenTheme);
+            Controls.Add(BrownTheme);
+            Controls.Add(BlueTheme);
+            Controls.Add(label3);
+            Controls.Add(DarkSquaresPicker);
+            Controls.Add(WhiteSquaresPicker);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Margin = new Padding(3, 4, 3, 4);
+            MaximumSize = new Size(800, 863);
+            MinimumSize = new Size(800, 863);
+            Name = "ThemePicker";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Theme Customization";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
