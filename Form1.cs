@@ -439,15 +439,13 @@ namespace Chess
             Controls.Add(difficultyLabel);
 
             //Adding left border
-            if (reset)
-            {
-                borderLeft = new Panel();
-                borderLeft.Location = new Point(difficultyLabel.Location.X - 7, difficultyLabel.Location.Y);
-                borderLeft.Height = difficultyLabel.Height + difficultyBar.Height;
-                borderLeft.Width = 7;
-                borderLeft.BackColor = Color.FromArgb(109, 139, 70);
-                Controls.Add(borderLeft);
-            }
+            Controls.Remove(borderLeft);
+            borderLeft = new Panel();
+            borderLeft.Location = new Point(difficultyLabel.Location.X - 7, difficultyLabel.Location.Y);
+            borderLeft.Height = difficultyLabel.Height + difficultyBar.Height;
+            borderLeft.Width = 7;
+            borderLeft.BackColor = Color.FromArgb(109, 139, 70);
+            Controls.Add(borderLeft);
 
             String temp = null;
             if(panelPositionInfo != null && !reset) temp = panelPositionInfo.Text;
@@ -513,21 +511,20 @@ namespace Chess
 
             panel.Controls.Add(gameControls);
 
-            if (reset)
-            {
-                ThemeBtn = new Panel();
-                ThemeBtn.Location = new Point(difficultyBar.Location.X - 70, difficultyBar.Location.Y + 750);
-                ThemeBtn.Width = 50;
-                ThemeBtn.Height = 50;
-                Image originalImage = Image.FromFile("Images/Theme.png");
-                Bitmap resizedImage = new Bitmap(originalImage, 50, 50);
-                ThemeBtn.BackgroundImage = resizedImage;
-                ThemeBtn.Cursor = Cursors.Hand;
-                ThemeBtn.Click += ThemeBtn_Click;
-                ThemeBtn.Tag = null;
+            Controls.Remove(ThemeBtn);
+            ThemeBtn = new Panel();
+            ThemeBtn.Location = new Point(difficultyBar.Location.X, difficultyBar.Location.Y + 750);
+            ThemeBtn.Width = 50;
+            ThemeBtn.Height = 50;
+            Image originalImage = Image.FromFile("Images/Theme.png");
+            Bitmap resizedImage = new Bitmap(originalImage, 50, 50);
+            ThemeBtn.BackgroundImage = resizedImage;
+            ThemeBtn.Cursor = Cursors.Hand;
+            ThemeBtn.Click += ThemeBtn_Click;
+            ThemeBtn.Tag = null;
 
-                Controls.Add(ThemeBtn);
-            }
+            Controls.Add(ThemeBtn);
+            
 
             Controls.Add(panel);
 
@@ -538,8 +535,17 @@ namespace Chess
                 difficultyLabel.Visible = false;
                 borderLeft.Visible = false;
                 panel.Visible = false;
+                ThemeBtn.Visible = false;
             }
 
+            if(this.Size.Height < 900)
+            {
+                difficultyBar.Visible = false;
+                difficultyLabel.Visible = false;
+                borderLeft.Visible = false;
+            }
+
+            if(this.Size.Height < 1050) ThemeBtn.Visible = false;
         }
 
         private void ThemeBtn_Click(object sender, EventArgs e)
